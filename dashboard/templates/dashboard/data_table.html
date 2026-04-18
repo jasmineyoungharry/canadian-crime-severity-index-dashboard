@@ -1,0 +1,40 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<h1>Crime Data Table</h1>
+
+<div class="card">
+    <form method="get" class="filter-form">
+        {{ form.as_p }}
+        <button type="submit">Filter</button>
+        <a href="{% url 'data_table' %}" class="clear-link">Clear</a>
+    </form>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Geography</th>
+                <th>Year</th>
+                <th>Metric</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.province_or_territory }}</td>
+                <td>{{ record.year }}</td>
+                <td>{{ record.metric }}</td>
+                <td>{{ record.value }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

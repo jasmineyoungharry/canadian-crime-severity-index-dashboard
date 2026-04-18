@@ -1,0 +1,82 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<h1>Crime Charts</h1>
+
+<div class="card">
+    <form method="get" class="filter-form">
+        <label for="metric">Select Metric for Trend Line:</label>
+        <select name="metric" id="metric">
+            {% for metric in metrics %}
+            <option value="{{ metric }}" {% if metric == selected_metric %}selected{% endif %}>
+                {{ metric }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Update Chart</button>
+        <a href="{% url 'charts' %}" class="clear-link">Clear</a>
+    </form>
+</div>
+
+<div class="card">
+    <p><strong>Selected Metric:</strong> {{ selected_metric }}</p>
+    <p><strong>Latest Year in Dataset:</strong> {{ latest_year }}</p>
+</div>
+
+<div class="card">
+    <h2>Line Chart: {{ selected_metric }} Over Time</h2>
+    <canvas id="lineChart"></canvas>
+</div>
+
+<div class="card">
+    <h2>Bar Chart: All Metrics in {{ latest_year }}</h2>
+    <canvas id="barChart"></canvas>
+</div>
+
+<script>
+    const lineLabels = JSON.parse('{{ line_labels|escapejs }}');
+    const lineValues = JSON.parse('{{ line_values|escapejs }}');
+    const barLabels = JSON.parse('{{ bar_labels|escapejs }}');
+    const barValues = JSON.parse('{{ bar_values|escapejs }}');
+
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    new Chart(lineCtx, {
+        type: 'line',
+        data: {
+            labels: lineLabels,
+            datasets: [{
+                label: '{{ selected_metric|escapejs }}',
+                data: lineValues,
+                fill: false,
+                tension: 0.1,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: barLabels,
+            datasets: [{
+                label: 'Metric Value',
+                data: barValues,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

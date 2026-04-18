@@ -1,0 +1,48 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<h1>Canadian Crime Statistics Dashboard</h1>
+
+<div class="card">
+    <h2>Project Overview</h2>
+    <p>
+        This dashboard displays Canadian crime statistics using data imported from a CSV file
+        into a Django SQLite database. The project uses Django for backend development,
+        SQLite for storage, DB Browser for database inspection, and Chart.js for visualization.
+    </p>
+</div>
+
+<div class="stats-grid">
+    <div class="card">
+        <h3>Total Records</h3>
+        <p>{{ total_records }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Metrics</h3>
+        <p>{{ total_metrics }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Years Covered</h3>
+        <p>
+            {% if min_year and max_year %}
+                {{ min_year }} - {{ max_year }}
+            {% else %}
+                No data loaded yet
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Main Features</h2>
+    <ul>
+        <li>Import Canadian crime data from CSV</li>
+        <li>Store data in SQLite through Django</li>
+        <li>Inspect records using DB Browser for SQLite</li>
+        <li>Display crime data in a table</li>
+        <li>Visualize trends using charts</li>
+    </ul>
+</div>
+{% endblock %}
