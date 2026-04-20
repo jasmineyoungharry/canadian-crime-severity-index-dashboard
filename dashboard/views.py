@@ -64,7 +64,8 @@ def charts(request):
     bar_values = [record.value for record in latest_records]
 
     context = {
-        'metrics': metrics,
+        'metrics':
+            metrics,
         'selected_metric': selected_metric,
         'latest_year': latest_year,
         'line_labels': json.dumps(line_labels),
